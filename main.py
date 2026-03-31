@@ -8,8 +8,7 @@ import os
 import time
 from pathlib import Path
 from typing import Optional
-from interfaces import FrameData
-from vision_processor import ObjectGraspingVisionProcessor
+from vision_modules import FrameData, ObjectGraspingVisionProcessor
 
 
 class VisionTestApp:
@@ -30,7 +29,7 @@ class VisionTestApp:
         self.processor = ObjectGraspingVisionProcessor(
             enable_object_detection=True,
             enable_hand_detection=True,
-            yolo_model=yolo_model,
+            yolo_model=os.path.join('vision_modules', 'models', yolo_model),
             yolo_confidence=yolo_confidence,
             device=device
         )
