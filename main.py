@@ -122,14 +122,14 @@ class VisionTestApp:
             return False
     
     def process_video(self, video_path: str, output_path: Optional[str] = None,
-                     skip_frames: int = 1) -> bool:
+                     skip_frames: Optional[int] = None) -> bool:
         """
         处理视频文件
         
         Args:
             video_path: 输入视频路径
             output_path: 输出视频路径（可选）
-            skip_frames: 跳帧数（可选，用于加快处理）
+            skip_frames: 跳帧数（可选，默认None表示每秒处理一次；传入1表示处理所有帧）
             
         Return: 处理是否成功
         """
@@ -151,6 +151,11 @@ class VisionTestApp:
             width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
             height = int(cap.get(cv2.CAP_PROP_HEIGHT))
             total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            
+            # 如果skip_frames为None，默认每秒处理一次
+            if skip_frames is None:
+                skip_frames = int(fps)
+                print(f"[App] Using default frame skip: {skip_frames} (1 frame per second)")
             
             print(f"[App] Video info - FPS: {fps}, Resolution: {width}x{height}, Total frames: {total_frames}")
             

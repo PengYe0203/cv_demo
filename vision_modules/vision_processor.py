@@ -24,7 +24,8 @@ class ObjectGraspingVisionProcessor(VisionProcessor):
                  enable_hand_detection: bool = True,
                  enable_depth_estimation: bool = False,
                  yolo_model: str = 'vision_modules/models/yolov8n.pt',
-                 yolo_confidence: float = 0.5,
+                 yolo_confidence: float = 0.3,
+                 yolo_nms_iou: float = 0.2,
                  device: str = '0'):
         """
         初始化视觉处理管道
@@ -34,7 +35,8 @@ class ObjectGraspingVisionProcessor(VisionProcessor):
             enable_hand_detection: 是否启用手部检测
             enable_depth_estimation: 是否启用深度估计
             yolo_model: YOLOv8模型名称
-            yolo_confidence: YOLOv8置信度阈值
+            yolo_confidence: YOLOv8置信度阈值（越低越容易检测）
+            yolo_nms_iou: YOLOv8 NMS IoU阈值（越低越不合并框）
             device: 运算设备
         """
         self.enable_object_detection = enable_object_detection
@@ -50,6 +52,7 @@ class ObjectGraspingVisionProcessor(VisionProcessor):
             self.object_detector = YOLOv8Detector(
                 model_name=yolo_model,
                 confidence_threshold=yolo_confidence,
+                nms_iou_threshold=yolo_nms_iou,
                 device=device
             )
         
